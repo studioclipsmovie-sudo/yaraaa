@@ -80,7 +80,9 @@
       background: linear-gradient(to top, #fff0f5, #ffe0f0);
       overflow: hidden;
       border-radius: 12px;
-      margin: 30px 0;
+      margin: 30px 0; 
+      touch-action: none;
+
     }
     #player {
       position: absolute; bottom: 10px; left: 50%;
@@ -195,21 +197,23 @@
     let score = 0;
 
     // Spielerbewegung Maus
-    document.addEventListener('mousemove', e => {
-      const rect = gameContainer.getBoundingClientRect();
-      let x = e.clientX - rect.left - player.offsetWidth/2;
-      x = Math.max(0, Math.min(rect.width - player.offsetWidth, x));
-      player.style.left = x + 'px';
-    });
-
-    // Spielerbewegung für Touchscreen (NUR im Spielbereich)
-gameContainer.addEventListener('touchmove', e => {
-  const touch = e.touches[0];
+document.addEventListener('mousemove', e => {
   const rect = gameContainer.getBoundingClientRect();
-  let x = touch.clientX - rect.left - player.offsetWidth/2;
+  let x = e.clientX - rect.left - player.offsetWidth / 2;
   x = Math.max(0, Math.min(rect.width - player.offsetWidth, x));
   player.style.left = x + 'px';
 });
+
+// Spielerbewegung Touch (nur im Spiel, kein Seitenscroll)
+gameContainer.addEventListener('touchmove', e => {
+  e.preventDefault();
+  const touch = e.touches[0];
+  const rect = gameContainer.getBoundingClientRect();
+  let x = touch.clientX - rect.left - player.offsetWidth / 2;
+  x = Math.max(0, Math.min(rect.width - player.offsetWidth, x));
+  player.style.left = x + 'px';
+}, { passive: false });
+
 
 
     // Herzchen erzeugen
