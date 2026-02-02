@@ -202,15 +202,15 @@
       player.style.left = x + 'px';
     });
 
-    // Spielerbewegung Touch
-    document.addEventListener('touchmove', e => {
-      e.preventDefault();
-      const touch = e.touches[0];
-      const rect = gameContainer.getBoundingClientRect();
-      let x = touch.clientX - rect.left - player.offsetWidth/2;
-      x = Math.max(0, Math.min(rect.width - player.offsetWidth, x));
-      player.style.left = x + 'px';
-    }, {passive: false});
+    // Spielerbewegung für Touchscreen (NUR im Spielbereich)
+gameContainer.addEventListener('touchmove', e => {
+  const touch = e.touches[0];
+  const rect = gameContainer.getBoundingClientRect();
+  let x = touch.clientX - rect.left - player.offsetWidth/2;
+  x = Math.max(0, Math.min(rect.width - player.offsetWidth, x));
+  player.style.left = x + 'px';
+});
+
 
     // Herzchen erzeugen
     function createFallingHeart() {
